@@ -1,12 +1,7 @@
-# Have a look at single layer perseptron example
-# Artificial Neuro Network for Calssifiaction
 # inputs --> Weights --> Summing Junction + bias --> Activation Function --> Results
 
 import numpy as np
 import matplotlib.pyplot as plt
-
-# I am not doing the updating of the weights in the most professional way, however, it is functional at the moment.
-# Once more has been learned regarding back propigation, this will be updated
 
 class slp:
     def __init__(self, inputs, weights, bias):
@@ -57,8 +52,6 @@ class Delta_Rule:
 
 class Activation_Linier:
     def forward(self, Input):
-        #exp_values = np.exp(Input)
-        #output=exp_values
         output = Input
         return (output)
 
@@ -114,8 +107,7 @@ def data_sort(FileName):
     np.random.shuffle(allData) #Shuffle the data
     return (allData)
 
-#now syphen off the different info streams: input and desired
-#define desired_array and input_array
+# Process data using the data_sort fuction
 allData=data_sort('weight-height.csv')
 # First column of new data shows whether Male=1 or Female=-1
 # Second column is height
@@ -181,7 +173,7 @@ def Multiple_Pass(epochs,SampledData, original_weights, bias, eta):
 
     return (output_weights)    
 
-#original_weights=np.array([-39, 90]) # These may be randomly chosen at the start
+
 def Select_Initial_Weights(Choice_Percentage):
     original_weights=np.array([random.uniform(-35, -25), random.uniform(92, 98)])
     weights_list=[]
