@@ -1,5 +1,5 @@
 # inputs --> Weights --> Summing Junction + bias --> Activation Function --> Results
-
+import Family_Tree as ft
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -77,7 +77,17 @@ class Single_Pass:
         Update.forward(allData, Activation.forward(First_Pass.output), original_weights, eta, gender)
         self.output=Update.new_weights
 
+#Creating Data
+Father=[1, 180, 82.4, 0] #Using averages for Germany
+Mother=[-1, 166, 67.5, 0] #Using averages for Germany
+Number_of_Generations = 8
+Existing_Population=[]
 
+Example_dataSet=ft.Simultion()
+Example_dataSet.Like_Rabbits(Father, Mother, Number_of_Generations, Existing_Population)
+allData=Example_dataSet.output
+np.random.shuffle(allData)
+#print (allData)
 
 import random
 
@@ -108,7 +118,7 @@ def data_sort(FileName):
     return (allData)
 
 # Process data using the data_sort fuction
-allData=data_sort('weight-height.csv')
+#allData=data_sort('weight-height.csv')
 # First column of new data shows whether Male=1 or Female=-1
 # Second column is height
 # Third column is weight
@@ -192,15 +202,15 @@ def Select_Initial_Weights(Choice_Percentage):
 bias=70
 eta=0.1
 Number_of_Samples=50
-original_weights=Select_Initial_Weights(53) #The reason why I have selected a starting accuracy percentage of 53% is due to a lack of local minimums around here.
+original_weights=Select_Initial_Weights(60) #The reason why I have selected a starting accuracy percentage of 53% is due to a lack of local minimums around here.
 
 Initial_Accuracy=Accuracy_Review(allData, original_weights, bias, eta)
 
-Second_Weights=Full_Pass(Random_Sample(allData, 20), original_weights, bias, eta)
+Second_Weights=Full_Pass(Random_Sample(allData, 50), original_weights, bias, eta)
 Next_Accuracy=Accuracy_Review(allData, Second_Weights, bias, eta)
 
 epochs=10
-Third_Weights=Multiple_Pass(epochs, Random_Sample(allData, 10), Second_Weights, bias, eta)
+Third_Weights=Multiple_Pass(epochs, Random_Sample(allData, 100), Second_Weights, bias, eta)
 Final_Accuracy=Accuracy_Review(allData, Third_Weights, bias, eta)
 
 #Printing Statements:
@@ -211,7 +221,7 @@ print("And the Accuracy Percentage passing through", epochs,"gives the weights",
 
 # Older Work:
 def plot_data(original_weights,allData): #Plotting the shuffled data
-    samplingRate=100
+    samplingRate=5
     plt.figure(1)
     for ii in range (int(len(allData)/samplingRate)):
     
@@ -221,7 +231,7 @@ def plot_data(original_weights,allData): #Plotting the shuffled data
             plt.scatter(allData[ii*samplingRate,1],allData[ii*samplingRate,2], color='red', label="Female")
 
     #plotting line
-    m= original_weights[1]/original_weights[0] #gradient
+    m= Third_Weights[1]/Third_Weights[0] #gradient
     x1=np.mean(allData[:,1])
     y1=np.mean(allData[:,2])
     
@@ -257,7 +267,7 @@ def Gender_Printer(Name, Height, Mass):
 
     return(print("According to the dataset, the Height and Weight provided and training of this SLP, GENDER PRINTER says",Name,"is", Gender_script, ". Hopefully that is correct :)"))
 
-Gender_Printer("Joel", 178, 68)
-Gender_Printer("Velobte", 170, 53)
+Gender_Printer("Joel", 178, 80) #Joel is actually male
+Gender_Printer("Velobte", 170, 53) #Velobte is actually male
 
 plot_data(Third_Weights,allData)
